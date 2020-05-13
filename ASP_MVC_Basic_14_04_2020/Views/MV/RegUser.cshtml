@@ -1,0 +1,16 @@
+﻿
+<h2 style="text-align: center">Sign In</h2>
+
+<form action="/MV/AddUser" method="post" class="reg-form">
+    <span>Login:</span>    <input type="text"     name="RegLogin" placeholder="Login" />         <br />      
+    <span>Password:</span> <input type="password" name="RegPassword" placeholder="Password" />   <br />
+    <span>Repeat:</span>   <input type="password" name="RegRepeat" placeholder="Repeat" />       <br />       
+    <span>Name:</span>     <input type="text"     name="RegRealName" placeholder="Your name" />  <br />         
+
+    <button>Create account</button>
+</form>
+
+@if (ViewBag.ErrorMsg != null)
+{
+    <script>alert(ViewBag.ErrorMsg)</script>
+}

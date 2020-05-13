@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Parameters for random: </h2>
+
+<form method="post" class="post-form">
+    min: <input type="number" name="min" value="@(Request.Params["min"] ?? "10")"  /> <br />
+    max: <input type="number" name="max" value="@(Request.Params["max"] ?? "20")" /> <br />
+    color: <input type="color" name="color" value="@ViewBag.color" /> <br />
+    <input type="submit" value="Generate" />
+</form>
+
+<span style="color: @ViewBag.color">@ViewBag.value</span>
+<span style="color: @(Request.Params["color"] ?? "Black")">@ViewBag.value</span>
+

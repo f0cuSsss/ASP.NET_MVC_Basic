@@ -1,0 +1,194 @@
+﻿
+<h1>Внедрение кода - Razor</h1>
+
+<%  Response.Write("Works"); %> - Обработка не осуществляется
+
+<p>Razor - механизм (движок) по внедрению кода в HTML &rarr; CSHTML (C# + HTML)</p>
+<p>Синтаксис Razor использует служебный символ &laquo;@@&raquo;</p>
+<p>Для экранирования используется &laquo;@@&raquo;</p>
+<p>Для адресов єл. почты: user@itstep.academy</p>
+
+<hr />
+
+<h3>Сокращенный синтаксис</h3>
+<p>В сокращенном синтаксисе нет скобок и @@ действует на ближайшее выражение.</p>
+Код: <tt>@@Request.Headers[0]</tt> | Результат <cite>@Request.Headers[0]</cite>
+
+<p>В скоращенном синтаксисе не допускаются пробелы</p>
+Код: <tt>@@true ? 1 : 0</tt> | Результат <cite>@true ? 1 : 0</cite>
+
+<hr />
+
+<h3>Полный синтаксис</h3>
+<p>В полном синтаксисе применяются скобки: круглые для выражения, фигурные для инструкций</p>
+Код: <tt>@@(true ? 1 : 0)</tt> | Результат <cite>@(true ? 1 : 0)</cite> <br />
+Код: <tt>@@{int x = 10;}</tt> | Результат <cite>@{int x = 10;}</cite>
+
+<p>Переменные, описанные в блоках Razor, остаются доступными и в других блоках страницы</p>
+Код: <tt>@@x</tt> | Результат <cite>@x</cite>
+
+<hr />
+
+<h3>Условные инструкции</h3>
+<p>К условным инструкциям относят: if, else if, switch</p>
+
+<p>If: </p>
+
+@if (x < 10)
+{
+    <b>x&lt;10</b>
+} <br />
+
+@if (x < 10)
+{
+    <u>x&lt;10</u>
+}
+else
+{
+    <u>x&gt;10</u>
+    <s>x = @x</s>
+} <br />
+
+@if (x < 5)
+{
+    <i>x&lt;5</i>
+}
+else if (x < 10)
+{
+    <i>x&gt;5</i>
+} <br />
+
+<hr />
+
+<p>Switch: </p>
+
+@switch (x)
+{
+    case 1:
+        <b>x = 1</b>
+        break;
+    case 10:
+        <b>x = @x</b>
+        break;
+    default:
+        <b>Unknown</b>
+        break;
+}
+
+<hr />
+
+<h3>Задание</h3>
+<h4>Вывести текущий день недели по-русски</h4>
+<p>Текущий день недели - </p>
+
+@switch (DateTime.Now.DayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        <u>Воскресенье</u>
+        break;
+    case DayOfWeek.Monday:
+        <u>Понедельник</u>
+        break;
+    case DayOfWeek.Tuesday:
+        <u>Вторник</u>
+        break;
+    case DayOfWeek.Wednesday:
+        <u>Среда</u>
+        break;
+    case DayOfWeek.Thursday:
+        <u>Четверг</u>
+        break;
+    case DayOfWeek.Friday:
+        <u>Пятница</u>
+        break;
+    case DayOfWeek.Saturday:
+        <u>Субота</u>
+        break;
+    default:
+        <u>FREE</u>
+        break;
+}
+
+<hr />
+
+<h3>HTML Helper</h3>
+<p>HTML Helper - класс HTML, содержащий основные элементы управления</p>
+
+<p>Код: <tt>@@Html.TextBox("tb1")</tt> | Результат <cite>@Html.TextBox("tb1")</cite></p>
+<p>Код: <tt>@@Html.Label("lb1")</tt> | Результат <cite>@Html.Label("tb1")</cite></p>
+
+<hr />
+
+<h3>Работа с form</h3>
+
+@using (Html.BeginForm("RazorDemo", "MV", FormMethod.Get, new { enctype = "multipart/form-data" }))
+{
+    <i>Имя: </i> @Html.TextBox("Name", "", new { placeholder = "Введите имя" })
+    <button>Отправить</button>
+    <p><span>Ранее отправлено: </span> @(Request.Params["Name"] ?? "None")</p>
+}
+
+<hr />
+
+<h3>Инструкции повтора (цикла)</h3>
+<p>for, foreach, while, do while</p>
+
+@for (int i = 0; i <= 10; i++)
+{
+    <li>@i</li>
+}
+
+
+<h3>Задание</h3>
+<h4>Вывести числа кратные 3 от и до введеного пользователем</h4>
+
+@using (Html.BeginForm("RazorDemo", "MV", FormMethod.Get))
+{
+    <i>Первое: </i> @Html.TextBox("Ot", "", new { placeholder = "От" })
+    <i>Второе: </i> @Html.TextBox("Do", "", new { placeholder = "До" })
+    <button>Отправить</button>
+
+}
+
+<p><span>Ранее отправлено: </span> @(Request.Params["Ot"] ?? "None")</p>
+<p><span>Ранее отправлено: </span> @(Request.Params["Do"] ?? "None")</p>
+
+@*@{
+        if (Request.Params["Ot"] != null || Request.Params["Do"] != null)
+        {
+            int a = Convert.ToInt32(@Request.Params["Ot"]);
+            int b = Convert.ToInt32(@Request.Params["Do"]);
+
+            for (int i = (a > b ? b : a); i < (a < b ? b : a); i++)
+            {
+                if (i % 3 == 0)
+                {
+                    <b>@i</b>
+                }
+            }
+
+        }
+    }*@
+
+@{
+    if (Request.Params["Ot"] != null || Request.Params["Do"] != null)
+    {
+        int a = Convert.ToInt32(@Request.Params["Ot"]);
+        int b = Convert.ToInt32(@Request.Params["Do"]);
+        int delta = (a - b) / Math.Abs(a - b);
+
+        @*for (int i = a; i <> b; i += 3 * delta)
+            {
+                <b>@i</b>
+            }*@
+
+        for (int i = a; i != b; i += delta)
+        {
+            if (i % 3 == 0)
+            {
+                <b>@i</b>
+            }
+        }
+
+    }
+}

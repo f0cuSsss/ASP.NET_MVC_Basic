@@ -1,0 +1,34 @@
+﻿<h1>Cities</h1>
+
+<ul>
+    @foreach (var city in ViewBag.CityList)
+    {
+    <li>
+        @city.Name
+        <form action="/Book/DelCity" method="post" onsubmit="return confirm('You are trying to delete. Confirm ?')">
+            <input type="hidden" name="Id" value="@city.Id" />
+            <button>Delete</button>
+        </form>
+        <input type="button" value="Edit"
+               onclick="
+                       city_addeditform.querySelector('input[name=Id]').value='@city.Id';
+                       city_addeditform.querySelector('input[name=Name]').value='@city.Name';
+                       document.getElementById('cityAddButton').value='Save';
+                       " />
+    </li>
+    }
+</ul>
+
+
+<form action="/Book/AddCity" method="post" id="city_addeditform">
+    <span>Name: </span> <input name="Name" /> <br />
+    <input type="submit" value="Add" id="cityAddButton" />
+    <input type="hidden" value="0" Name="Id" />
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <script>
+        setTimeout(() => { alert('@ViewBag.Message') }, 10);
+    </script>
+}

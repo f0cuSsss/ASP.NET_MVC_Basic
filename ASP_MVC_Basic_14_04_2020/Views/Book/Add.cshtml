@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout_B4.cshtml";
+}
+
+<h2>Add</h2>
+
+
+<form action="/Book/AddBook" method="post" class="add-book-form" enctype="multipart/form-data">
+    <span class="badge badge-primary text-wrap">Title</span>
+    <input type="text" name="Title" class="form-control @("1".Equals(Session["InvalidControl"]) ? "is-invalid" : "") "
+          value="@Session["AddBookTitle"]" />
+
+    <span class="badge badge-primary text-wrap">Annotation</span>
+    <textarea name="Annotation" class="form-control" rows="3">
+    @Session["AddBookAnnotation"]
+    </textarea>
+
+    <span class="badge badge-primary text-wrap">Year</span>
+    <input type="number" name="Year" class="form-control"
+           value="@(Session["AddBookYear"] ?? "2020")" />
+
+    <span class="badge badge-primary text-wrap">Pages</span>
+    <input type="number" name="Pages" class="form-control"
+          value="@(Session["AddBookPages"] ?? "100")" />
+
+    <span class="badge badge-primary text-wrap">Price</span>
+    <input type="number" name="Price" step="0.05" class="form-control"
+           value="@(Session["AddBookPrice"] ?? "95.5")" />
+
+    <span class="badge badge-primary text-wrap">Cover</span>
+    <input type="file" name="Cover_file" class="form-control @("2".Equals(Session["InvalidControl"]) ? "is-invalid" : "")" />
+
+    <span class="badge badge-primary text-wrap">Author</span> <br />
+    <select name="Id_author" class="form-control @("3".Equals(Session["InvalidControl"]) ? "is-invalid" : "")"">
+        @foreach (var author in ASP_MVC_Basic_14_04_2020.Models.Author.GetAuthors())
+        {
+
+            @*string msg = String.IsNullOrEmpty(@author.Pseudo) || @author.Pseudo == " " ?
+                    @author.Name : @author.Pseudo + " ( " + @author.Name + ")";
+
+                <option value="@author.Id">@msg</option>*@
+
+            <option value="@author.Id" @(author.Id.Equals(Session["AddBookAuthorId"]) ? "selected" : "")>
+                @(
+                                            String.IsNullOrEmpty(@author.Pseudo)
+                                            ? @author.Name
+                                            : @author.Pseudo + " ( " + @author.Name + ")"
+                )
+            </option>
+        }
+    </select>
+
+    <span class="badge badge-primary text-wrap">Genre</span> <br />
+    <select name="Id_Genre" class="form-control @("4".Equals(Session["InvalidControl"]) ? "is-invalid" : "")"">
+        @foreach (var genre in ASP_MVC_Basic_14_04_2020.Models.Genre.GetGenres())
+        {
+            <option value="@genre.Id" @(genre.Id.Equals(Session["AddBookGenreId"]) ? "selected" : "")>
+                @genre.Name
+            </option>
+        }
+    </select>
+
+    <input type="submit" value="Add" class="btn btn-primary" />
+
+</form>
+
+
+<input type="button" id="clearForm" value="Очистить" class="btn btn-outline-danger" />
+
+@if(@ViewBag.Message != null)
+{
+    <script>
+        setTimeout(() => { alert(`@ViewBag.Message`) }, 300);
+    </script>
+}

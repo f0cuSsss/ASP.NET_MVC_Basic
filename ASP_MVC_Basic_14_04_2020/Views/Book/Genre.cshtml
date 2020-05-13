@@ -1,0 +1,41 @@
+﻿<h2>Add new genre</h2>
+
+
+<h3>Genres in DB</h3>
+<ul>
+    @{
+
+        foreach (var genre in ViewBag.GenreList)
+        {
+                <li>
+                    @genre.Name <i>@genre.Description</i>
+                    <form action="/Book/DelGenre" method="post" onsubmit="return confirm('You are trying to delete. Confirm ?')">
+                        <input type="hidden" name="Id" value="@genre.Id" />
+                        <button>Delete</button>
+                    </form>
+                    <input type="button" value="Edit"
+                           onclick="
+                       add_editForm.querySelector('input[name=Id]').value='@genre.Id';
+                       add_editForm.querySelector('input[name=Name]').value='@genre.Name';
+                       add_editForm.querySelector('textarea[name=Description]').value='@genre.Description';
+                       document.getElementById('genreAddButton').value='Save';
+                       " />
+                </li>
+            }
+    }
+</ul>
+
+<form action="/Book/AddGenre" method="post" id="add_editForm">
+    <span>Name: </span> <input name="Name" /> <br />
+    <span>Description: </span> <textarea name="Description"></textarea> <br />
+    <input type="submit" value="Add" id="genreAddButton" />
+    <input type="hidden" value="0" Name="Id" />
+
+</form>
+
+@if (ViewBag.ErrMessage != null)
+{
+    <script>
+        setTimeout(() => { alert('@ViewBag.ErrMessage') }, 10);
+    </script>
+}
